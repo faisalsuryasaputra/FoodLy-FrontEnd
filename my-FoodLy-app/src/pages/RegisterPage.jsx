@@ -60,11 +60,13 @@ export default function RegisterPage() {
             console.log("Berhasil:", response);
             // --- TAMBAHKAN LOGIKA PENYIMPANAN DI SINI ---
             if (response.token) {
+                // Jika bentuknya langsung response.token dan response.user
                 localStorage.setItem('token', response.token);
-                // Jika backend mengirim data user, simpan juga
-                if (response.user) {
-                    localStorage.setItem('user', JSON.stringify(response.user));
-                }
+                localStorage.setItem('user', JSON.stringify(response.user));
+            } else if (response.data && response.data.token) {
+                // Jika dari axios terbungkus response.data
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
             }
             setSuccessMessage("Registrasi Berhasil! Mengalihkan ke halaman utama...");
             setTimeout(() => {

@@ -47,8 +47,10 @@ export default function LoginPage() {
             
             if (response.token) {
                 localStorage.setItem("token", response.token);
+                localStorage.setItem("user", JSON.stringify(response.user));
             } else if (response.data && response.data.token) {
                 localStorage.setItem("token", response.data.token);
+                localStorage.setItem("user", JSON.stringify(response.data.user));
             }
 
             setSuccessMessage("Login Berhasil! Mengalihkan...");

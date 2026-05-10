@@ -11,16 +11,15 @@ export default function Header() {
   const handleLogout = (e) => {
     e.preventDefault(); 
     
-    // 1. Hapus data dari localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('user'); 
+    setTimeout(() => {
+      // 1. Hapus data dari localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('user'); 
 
-    // 2. Beri notifikasi
-    alert("Berhasil keluar.");
-
-    // 3. Arahkan ke halaman login
-    navigate("/login");
-  }; // <--- Kurung penutup handleLogout harus di sini
+      // 2. Arahkan ke halaman login
+      navigate("/login");
+    }, 1000);
+  }; 
 
   return ( // <--- Return harus berada di luar handleLogout
     <nav className="navbar navbar-expand-lg bg-white shadow-sm">
@@ -56,14 +55,14 @@ export default function Header() {
             </li>
 
             <li className="nav-item">
-              <a className="nav-link fw-medium d-flex align-items-center gap-2" href="#">
+              <Link className="nav-link fw-medium d-flex align-items-center gap-2" to="/favorit">
                 <img src={FavoritIcon} alt="Favorit" />
                 Favorit
-              </a>
+              </Link>
             </li>
 
             <li className="nav-item">
-              <Link className="btn btn-custom" to="/recipe">
+              <Link className="btn btn-custom fw-medium d-flex align-items-center gap-2" to="/recipe">
                 + Buat Resep
               </Link>
             </li>

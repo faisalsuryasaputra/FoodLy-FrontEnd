@@ -5,7 +5,10 @@ import { useRecipe } from "../hooks/useRecipe"
 export default function HomePage() {
 
   const {recipeTerbaru, formatDate, topRecipes} = useRecipe()
-
+  // 1. Ambil data user dari localStorage
+  const userData = localStorage.getItem("user");
+  // 2. Parse data JSON menjadi object (tambahkan fallback jika kosong)
+  const currentUser = userData ? JSON.parse(userData) : { name: "Chef" };
   return(
     <>
       <div className="bg-custom-color min-vh-100">
@@ -13,7 +16,7 @@ export default function HomePage() {
           <div className="row">
             <div className="col d-flex align-items-center gap-2">
               <img src= {WelcomingIcon} alt="welcome" />
-              <p className="h3 m-0 fw-bold">Happy Cooking, faisalwp!</p>
+              <p className="h3 m-0 fw-bold">Happy Cooking, {currentUser.name}!</p>
             </div>
 
             <div className="row mt-2">
@@ -35,10 +38,12 @@ export default function HomePage() {
                   <div className="col-4" key={recipe.id}>
 
                     <FoodCard
+                      id={recipe.id}
                       name={recipe.title}
                       userName={recipe.user.name}
                       calCount={recipe.calories}
                       likeCount={recipe.likes_count}
+                      initialIsLiked={recipe.is_liked}
                       date={formatDate(recipe.created_at)}
 
                     />
@@ -59,10 +64,12 @@ export default function HomePage() {
                   <div className="col-4" key={recipe.id}>
 
                     <FoodCard
+                      id={recipe.id}
                       name={recipe.title}
                       userName={recipe.user.name}
                       calCount={recipe.calories}
                       likeCount={recipe.likes_count}
+                      initialIsLiked={recipe.is_liked}
                       date={formatDate(recipe.created_at)}
 
                     />
