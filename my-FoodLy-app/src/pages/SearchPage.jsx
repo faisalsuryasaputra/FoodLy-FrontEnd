@@ -11,6 +11,20 @@ export default function SearchPage() {
 
   const [kategori, setKategori] = useState("Kategori")
   const [urutan, setUrutan] = useState("Urutan")
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearch = async () => {
+    console.log("hai")
+    setIsLoading(true);
+
+    try {
+      await searchForRecipes(search, kategori, urutan);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const [search, setSearch] = useState("");
   return (
@@ -37,9 +51,9 @@ export default function SearchPage() {
 
               </div>
 
-              <button className="btn btn-custom d-flex align-items-center gap-3">
+              <button className="btn btn-custom d-flex align-items-center gap-3" onClick={handleSearch}>
                 <img src={WhiteSearchIcon} alt="search" />
-                <p className="m-0" onClick={() => searchForRecipes(search, kategori, urutan)}>Cari</p>
+                <p className="m-0">Cari</p>
               </button>
             </div>
 
@@ -79,25 +93,31 @@ export default function SearchPage() {
             </div>
           </div>
 
-          <div className="row mt-0 gy-3">
-            {
-              recipeSearchResult.map(recipe => (
-                <div className="col-4" key={recipe.id}>
-
-                  <FoodCard
-                    id={recipe.id}
-                    name={recipe.title}
-                    userName={recipe.user.name}
-                    calCount={recipe.calories}
-                    likeCount={recipe.likes_count}
-                    initialIsLiked={recipe.is_liked}
-                    date={formatDate(recipe.created_at)}
-
-                  />
+          {
+            isLoading ? (
+              <div className="d-flex justify-content-center align-items-center min-vh-50 mt-3">
+                <div className="spinner-border text-danger" role="status">
+                  <span className="visually-hidden">Loading...</span>
                 </div>
-              ))
-            }
-          </div>
+              </div>
+            ) : (
+              <div className="row mt-0 gy-3">
+                {recipeSearchResult.map((recipe) => (
+                  <div className="col-4" key={recipe.id}>
+                    <FoodCard
+                      id={recipe.id}
+                      name={recipe.title}
+                      userName={recipe.user.name}
+                      calCount={recipe.calories}
+                      likeCount={recipe.likes_count}
+                      initialIsLiked={recipe.is_liked}
+                      date={formatDate(recipe.created_at)}
+                    />
+                  </div>
+                ))}
+              </div>
+            )
+          }
 
 
         </div>
