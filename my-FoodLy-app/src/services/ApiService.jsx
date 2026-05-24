@@ -21,8 +21,20 @@ export const getTopRecipes = async () => {
   return response.data
 }
 
+export const getMyRecipes = async () => {
+  const token = localStorage.getItem("token");
+
+  const response = await FoodlyApiClient.get("/my-recipes", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return response.data.data
+}
+
 export const registerUser = async (userData) => {
-    // Karena sudah pakai FoodlyApiClient, base URL sudah otomatis terisi
-    const response = await FoodlyApiClient.post("/register", userData);
-    return response.data;
+  // Karena sudah pakai FoodlyApiClient, base URL sudah otomatis terisi
+  const response = await FoodlyApiClient.post("/register", userData);
+  return response.data;
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { getRecipes } from "../services/ApiService"
 import { searchRecipes } from "../services/ApiService"
 import { getTopRecipes } from "../services/ApiService"
+import { getMyRecipes } from "../services/ApiService"
 
 export function useRecipe() {
 
@@ -18,6 +19,7 @@ export function useRecipe() {
   const [recipeTerbaru, setRecipeTerbaru] = useState([])
   const [recipeSearchResult, setRecipeSearchResult] = useState([])
   const [topRecipes, setTopRecipes] = useState([])
+  const [myRecipesList, setMyRecipes] = useState([])
 
 
   useEffect(() => {
@@ -51,9 +53,22 @@ export function useRecipe() {
     }
   }
 
+  async function myRecipes() {
+    try {
+      const data = await getMyRecipes()
+      setMyRecipes(data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     getTop5Recipes()
   }, [])
 
-  return { recipeTerbaru, formatDate, recipeSearchResult, searchForRecipes, topRecipes }
+  useEffect(() => {
+    getMyRecipes()
+  }, [])
+
+  return { recipeTerbaru, formatDate, recipeSearchResult, searchForRecipes, topRecipes, myRecipesList }
 }

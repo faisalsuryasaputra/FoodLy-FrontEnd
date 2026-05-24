@@ -9,7 +9,7 @@ import MainLayout from "./layouts/MainLayout";
 import RecipePage from "./pages/RecipePage"
 import FavoritPage from "./pages/FavoritPage"
 import DetailRecipePage from "./pages/DetailRecipePage"
-
+import MyRecipesPage from "./pages/MyRecipesPage";
 
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
           <Route path="recipe" element={<RecipePage />} />
           <Route path="favorit" element={<FavoritPage />} />
           <Route path="detailrecipe" element={<DetailRecipePage />} />
+          <Route path="myrecipes" element={<MyRecipesPage />} />
         </Route>
       </Route>
       <Route path="/login" element={<LoginPage />} />
