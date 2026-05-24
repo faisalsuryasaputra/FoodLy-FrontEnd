@@ -6,7 +6,7 @@ import { useRecipe } from "../hooks/useRecipe";
 import whiteMyRecipe from "../assets/whiteMyRecipe.svg"
 
 export default function MyRecipesPage() {
-  const { myRecipesList } = useRecipe()
+  const { myRecipesList, formatDate } = useRecipe()
   const [isLoading, setIsLoading] = useState(true);
   return (
     <div className="bg-light min-vh-100 pt-5 pb-5">

@@ -67,7 +67,7 @@ export function useRecipe() {
   }, [])
 
   useEffect(() => {
-    getMyRecipes()
+    myRecipes()
   }, [])
 
   return { recipeTerbaru, formatDate, recipeSearchResult, searchForRecipes, topRecipes, myRecipesList }
