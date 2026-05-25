@@ -10,6 +10,8 @@ import RecipePage from "./pages/RecipePage"
 import FavoritPage from "./pages/FavoritPage"
 import DetailRecipePage from "./pages/DetailRecipePage"
 import MyRecipesPage from "./pages/MyRecipesPage";
+import EditRecipePage from './pages/EditRecipePage'; // sesuaikan path filenya
+
 
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
           <Route path="favorit" element={<FavoritPage />} />
           <Route path="detailrecipe" element={<DetailRecipePage />} />
           <Route path="myrecipes" element={<MyRecipesPage />} />
+          <Route path="/edit-recipe/:recipeId" element={<EditRecipePage />} />
         </Route>
       </Route>
       <Route path="/login" element={<LoginPage />} />

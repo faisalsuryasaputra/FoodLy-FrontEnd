@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { BsArrowLeft, BsPerson, BsHeartFill, BsCalendar3 } from 'react-icons/bs';
+import { BsArrowLeft, BsPerson, BsHeartFill, BsCalendar3, BsPencil, BsTrash } from 'react-icons/bs';
 import { FaFire } from 'react-icons/fa';
 import { ListSection } from '../components/ListSection';
 import { RecipeBadge } from '../components/RecipeBadge';
@@ -86,6 +86,26 @@ export default function DetailRecipePage() {
     }
   };
 
+  // FUNGSI UNTUK MENGHAPUS RESEP
+  const handleDelete = async () => {
+    const isConfirm = window.confirm("Apakah Anda yakin ingin menghapus resep ini?");
+    
+    if (isConfirm) {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(`http://127.0.0.1:8000/api/recipes/${recipeId}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        // Arahkan kembali ke halaman utama setelah berhasil dihapus
+        navigate('/'); 
+      } catch (error) {
+        console.error("Gagal menghapus resep:", error);
+        alert("Terjadi kesalahan saat menghapus resep.");
+      }
+    }
+  };
+
   // Tampilan saat data sedang dimuat
   if (isLoading) {
     return (
@@ -139,9 +159,29 @@ export default function DetailRecipePage() {
               style={{ height: '350px', objectFit: 'cover' }} 
             />
 
-            {/* JUDUL DAN PENULIS */}
-            <h2 className="fw-bold mb-2">{recipe.title}</h2>
-            <div className="text-secondary d-flex align-items-center gap-2 mb-4">
+            {/* JUDUL, TOMBOL EDIT & HAPUS */}
+            <div className="d-flex justify-content-between align-items-start mb-2">
+              <h2 className="fw-bold mb-0">{recipe.title}</h2>
+              
+              {/* Kelompok Tombol Aksi */}
+              <div className="d-flex gap-2">
+                <button 
+                  onClick={() => navigate(`/edit-recipe/${recipeId}`)} 
+                  className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1 rounded-pill px-3"
+                >
+                  <BsPencil size={14} /> Edit
+                </button>
+                <button 
+                  onClick={handleDelete} 
+                  className="btn btn-outline-danger btn-sm d-flex align-items-center gap-1 rounded-pill px-3"
+                >
+                  <BsTrash size={14} /> Hapus
+                </button>
+              </div>
+            </div>
+
+            {/* PENULIS */}
+            <div className="text-secondary d-flex align-items-center gap-2 mb-4 mt-2">
               <BsPerson size={18} /> <span>oleh {recipe.user?.name || "Anonim"}</span>
             </div>
 
