@@ -17,7 +17,7 @@ export default function FavoritPage() {
         
         // CATATAN: Pastikan endpoint ini sesuai dengan yang dibuat Kennata (Backend)
         // Contoh umumnya: /api/user/favorites atau /api/liked-recipes
-        const response = await axios.get("http://127.0.0.1:8000/api/user/favorites", {
+        const response = await axios.get("http://127.0.0.1:8000/api/likes", {
           headers: {
             Authorization: `Bearer ${token}`
           }

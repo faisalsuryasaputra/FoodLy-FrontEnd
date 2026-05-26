@@ -15,6 +15,9 @@ export default function DetailRecipePage() {
   // Menangkap ID resep yang dikirim dari halaman Home/Favorit saat kartu diklik
   const recipeId = location.state?.recipeId;
 
+  const userData = localStorage.getItem("user");
+  const currentUser = userData ? JSON.parse(userData) : null;
+
   // State untuk menyimpan data
   const [recipe, setRecipe] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +44,7 @@ export default function DetailRecipePage() {
         const data = response.data.data || response.data;
         setRecipe(data);
         
-        // Memasukkan data awal like dari backend ke state
+        // Memasukkan data awal like dari backend ke state (otomatis true/false dari withExists)
         setIsLiked(data.is_liked || false);
         setLikesCount(data.likes_count || 0);
 
@@ -163,21 +166,24 @@ export default function DetailRecipePage() {
             <div className="d-flex justify-content-between align-items-start mb-2">
               <h2 className="fw-bold mb-0">{recipe.title}</h2>
               
-              {/* Kelompok Tombol Aksi */}
-              <div className="d-flex gap-2">
-                <button 
-                  onClick={() => navigate(`/edit-recipe/${recipeId}`)} 
-                  className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1 rounded-pill px-3"
-                >
-                  <BsPencil size={14} /> Edit
-                </button>
-                <button 
-                  onClick={handleDelete} 
-                  className="btn btn-outline-danger btn-sm d-flex align-items-center gap-1 rounded-pill px-3"
-                >
-                  <BsTrash size={14} /> Hapus
-                </button>
-              </div>
+              {/* KUNCI PERBAIKAN: Cek apakah ID user login sama dengan user_id pembuat resep */}
+              {currentUser && currentUser.id === recipe.user_id && (
+                <div className="d-flex gap-2">
+                  <button 
+                    onClick={() => navigate(`/edit-recipe/${recipeId}`)} 
+                    className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1 rounded-pill px-3"
+                  >
+                    <BsPencil size={14} /> Edit
+                  </button>
+                  <button 
+                    onClick={handleDelete} 
+                    className="btn btn-outline-danger btn-sm d-flex align-items-center gap-1 rounded-pill px-3"
+                  >
+                    <BsTrash size={14} /> Hapus
+                  </button>
+                </div>
+              )}
+
             </div>
 
             {/* PENULIS */}
@@ -188,7 +194,6 @@ export default function DetailRecipePage() {
             {/* BADGE INFO */}
             <div className="d-flex flex-wrap align-items-center gap-4 text-secondary mb-4 small">
               <RecipeBadge icon={FaFire} text={`${recipe.calories} kalori`} colorClass="text-warning" />
-              {/* Gunakan state likesCount agar angkanya dinamis */}
               <RecipeBadge icon={BsHeartFill} text={`${likesCount} like`} colorClass="text-danger" />
               <RecipeBadge icon={BsCalendar3} text={formatDate(recipe.created_at)} />
             </div>
