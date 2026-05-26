@@ -3,7 +3,7 @@ import HomeIcon from "../assets/HomeIcon.svg"
 import SearchIcon from "../assets/SearchIcon.svg"
 import FavoritIcon from "../assets/FavoritIcon.svg"
 import LogoutIcon from "../assets/LogoutIcon.svg"
-import MyRecipeIcon from "../assets/MyRecipeIcon.svg"
+import MyRecipeIcon from "../assets/forkandspoon.svg"
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
@@ -50,7 +50,7 @@ export default function Header() {
 
             <li className="nav-item">
               <Link className="nav-link fw-medium d-flex align-items-center gap-2" to="/myrecipes">
-                <img src={MyRecipeIcon} alt="MyRecipeIcon" />
+                <img src={MyRecipeIcon} alt="MyRecipeIcon" width="20" height="20" />
                 My Recipes
               </Link>
             </li>
