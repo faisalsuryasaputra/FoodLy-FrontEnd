@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart } from "lucide-react"; 
-import axios from "axios"; // 1. PASTIKAN IMPORT AXIOS
+import axios from "axios"; 
 import NasiGoreng from "../assets/NasiGoreng.png";
 import CalorIcon from "../assets/CalorIcon.svg";
 import DateIcon from "../assets/DateIcon.svg";
@@ -9,57 +9,63 @@ import DateIcon from "../assets/DateIcon.svg";
 export default function FoodCard({ id, image, name, userName, likeCount, calCount, date, initialIsLiked }) {
   const navigate = useNavigate();
 
-  const [isLiked, setIsLiked] = useState(initialIsLiked ||false);
+  // State untuk menyimpan status Like secara optimis
+  const [isLiked, setIsLiked] = useState(initialIsLiked || false);
   const [currentLikes, setCurrentLikes] = useState(likeCount);
 
-  // Fungsi untuk pindah ke halaman detail (Ini sudah benar dan akan berfungsi)
+  // State pembantu untuk melacak apakah ada data baru dari backend (Home)
+  const [prevInitialIsLiked, setPrevInitialIsLiked] = useState(initialIsLiked);
+  const [prevLikeCount, setPrevLikeCount] = useState(likeCount);
+
+  // KUNCI PERBAIKAN (Derived State):
+  // Jika props dari halaman Home berubah (karena re-fetch data setelah kembali dari Detail),
+  // otomatis update state lokal FoodCard. Ini sangat aman dan bebas error linter.
+  if (initialIsLiked !== prevInitialIsLiked || likeCount !== prevLikeCount) {
+    setPrevInitialIsLiked(initialIsLiked);
+    setPrevLikeCount(likeCount);
+    setIsLiked(initialIsLiked || false);
+    setCurrentLikes(likeCount);
+  }
+
+  // Fungsi untuk pindah ke halaman detail
   const handleCardClick = () => {
     navigate("/detailrecipe", { state: { recipeId: id } });
   };
 
-  // 2. UBAH MENJADI ASYNC FUNCTION
   const handleLikeClick = async (e) => {
     e.stopPropagation(); // Mencegah pindah ke halaman detail saat klik like
 
-    // Ambil token dari localStorage untuk otorisasi
     const token = localStorage.getItem("token");
     
     if (!token) {
       alert("Silakan login terlebih dahulu untuk menyukai resep.");
-      return; // Hentikan fungsi jika belum login
+      return; 
     }
 
-    // Simpan state lama untuk berjaga-jaga jika API gagal (Rollback)
     const previousLikedState = isLiked;
     const previousLikesCount = currentLikes;
 
-    // Update UI secara instan (Optimistic Update)
+    // Optimistic Update: Ubah UI seketika sebelum menunggu respon server
     setIsLiked(!isLiked);
     setCurrentLikes(isLiked ? currentLikes - 1 : currentLikes + 1);
 
-    // 3. KIRIM DATA KE BACKEND
     try {
-      // PERHATIAN: Endpoint URL ini bisa berbeda tergantung buatan backend
-      // Umumnya formatnya seperti ini untuk fitur toggle like:
       await axios.post(
         `http://127.0.0.1:8000/api/recipes/${id}/like`, 
-        {}, // Body request kosong
+        {},
         {
           headers: {
-            Authorization: `Bearer ${token}` // Mengirimkan token user
+            Authorization: `Bearer ${token}` 
           }
         }
       );
-      // Jika sukses, tidak perlu lakukan apa-apa karena UI sudah terupdate
-      
     } catch (error) {
       console.error("Gagal menyukai resep:", error);
       
-      // Jika terjadi error (misal internet mati), kembalikan UI ke awal
+      // Rollback: Kembalikan seperti semula jika API gagal
       setIsLiked(previousLikedState);
       setCurrentLikes(previousLikesCount);
       
-      // Tampilkan pesan error jika server mengembalikan pesan khusus
       if (error.response && error.response.data.message) {
         alert(error.response.data.message);
       }
@@ -68,7 +74,6 @@ export default function FoodCard({ id, image, name, userName, likeCount, calCoun
 
   return (
     <>
-      {/* Tambahkan onClick pada div utama dan ubah kursor menjadi pointer */}
       <div 
         className="card border-0 shadow-sm transition-transform" 
         style={{ width: "100%", cursor: "pointer" }} 
@@ -81,8 +86,6 @@ export default function FoodCard({ id, image, name, userName, likeCount, calCoun
           style={{ height: "200px", objectFit: "cover" }} 
         />
 
-        
-        
         <div className="card-body mt-2">
           <h6 className="card-title fw-bold mb-2 text-truncate">{name}</h6>
           <p className="card-text text-secondary small mb-3">oleh {userName}</p>
@@ -97,7 +100,6 @@ export default function FoodCard({ id, image, name, userName, likeCount, calCoun
             >
               <Heart 
                 size={18} 
-                // Jika isLiked true, warna isi dan garisnya jadi orange FoodLy
                 fill={isLiked ? "#ff471a" : "none"} 
                 color={isLiked ? "#ff471a" : "#6c757d"} 
               />

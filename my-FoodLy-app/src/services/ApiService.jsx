@@ -1,35 +1,47 @@
 import FoodlyApiClient from "./FoodLyAPIClient"
 
 export const getRecipes = async () => {
-  const response = await FoodlyApiClient.get("/recipes")
+  const token = localStorage.getItem("token");
+  const response = await FoodlyApiClient.get("/recipes", {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : ''
+    }
+  });
   return response.data.data
 }
 
 export const searchRecipes = async (name, kategori, sort) => {
+  const token = localStorage.getItem("token");
   const response = await FoodlyApiClient.get("/recipes", {
     params: {
       search: name,
       kategori: kategori,
       sort: sort
+    },
+    headers: {
+      Authorization: token ? `Bearer ${token}` : ''
     }
-  })
+  });
   return response.data.data
 }
 
 export const getTopRecipes = async () => {
-  const response = await FoodlyApiClient.get("/recipes/top/best")
+  const token = localStorage.getItem("token");
+  const response = await FoodlyApiClient.get("/recipes/top/best", {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : ''
+    }
+  });
   return response.data
 }
 
 export const getMyRecipes = async () => {
   const token = localStorage.getItem("token");
-
   const response = await FoodlyApiClient.get("/my-recipes", {
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
-
   return response.data.data
 }
 

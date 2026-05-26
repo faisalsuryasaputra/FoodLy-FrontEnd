@@ -1,14 +1,25 @@
 import WelcomingIcon from "../assets/WelcomingIcon.svg"
 import FoodCard from "../components/FoodCard"
 import { useRecipe } from "../hooks/useRecipe"
+import { useEffect } from "react" // <-- TAMBAHKAN IMPORT INI
+import { useLocation } from "react-router-dom" // <-- TAMBAHKAN IMPORT INI
 
 export default function HomePage() {
-
-  const {recipeTerbaru, formatDate, topRecipes} = useRecipe()
+  const {recipeTerbaru, formatDate, topRecipes, fetchAllRecipes} = useRecipe()
+  const location = useLocation(); // Hook untuk mendeteksi perubahan rute
+  
   // 1. Ambil data user dari localStorage
   const userData = localStorage.getItem("user");
   // 2. Parse data JSON menjadi object (tambahkan fallback jika kosong)
   const currentUser = userData ? JSON.parse(userData) : { name: "Chef" };
+
+  // KUNCI PERBAIKAN: 
+  // Paksa HomePage untuk re-fetch data setiap kali lokasinya (URL) aktif
+  // Ini memastikan saat user menekan 'Back', datanya kembali segar dari database
+  useEffect(() => {
+    fetchAllRecipes();
+  }, [location, fetchAllRecipes]);
+
   return(
     <>
       <div className="bg-custom-color min-vh-100">
@@ -36,16 +47,15 @@ export default function HomePage() {
               {
                 topRecipes.map(recipe => (
                   <div className="col-4" key={recipe.id}>
-
                     <FoodCard
                       id={recipe.id}
+                      image={recipe.image_url}
                       name={recipe.title}
                       userName={recipe.user.name}
                       calCount={recipe.calories}
                       likeCount={recipe.likes_count}
                       initialIsLiked={recipe.is_liked}
                       date={formatDate(recipe.created_at)}
-
                     />
                   </div>
                 ))
@@ -62,23 +72,19 @@ export default function HomePage() {
               {
                 recipeTerbaru.slice(0,9).map(recipe => (
                   <div className="col-4" key={recipe.id}>
-
                     <FoodCard
                       id={recipe.id}
+                      image={recipe.image_url}
                       name={recipe.title}
                       userName={recipe.user.name}
                       calCount={recipe.calories}
                       likeCount={recipe.likes_count}
                       initialIsLiked={recipe.is_liked}
                       date={formatDate(recipe.created_at)}
-
                     />
                   </div>
                 ))
               }
-
-              
-
             </div>
           </div>
         </div>
