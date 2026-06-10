@@ -29,7 +29,7 @@ export default function EditRecipePage() {
     const fetchOldRecipeData = async () => {
       try {
         const savedToken = localStorage.getItem('token');
-        const response = await fetch(`http://127.0.0.1:8000/api/recipes/${recipeId}`, {
+        const response = await fetch(`https://foodly-backend-5mci.onrender.com/api/recipes/${recipeId}`, {
           headers: {
             'Authorization': `Bearer ${savedToken}`,
             'Accept': 'application/json'
@@ -113,7 +113,7 @@ export default function EditRecipePage() {
 
     try {
       // Menggunakan method PUT untuk memperbarui data resep spesifik
-      const response = await fetch(`http://127.0.0.1:8000/api/recipes/${recipeId}`, {
+      const response = await fetch(`https://foodly-backend-5mci.onrender.com/api/recipes/${recipeId}`, {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
