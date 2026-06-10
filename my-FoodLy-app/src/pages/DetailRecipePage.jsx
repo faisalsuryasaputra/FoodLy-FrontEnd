@@ -37,7 +37,7 @@ export default function DetailRecipePage() {
       try {
         const token = localStorage.getItem("token");
         // Panggil endpoint detail resep
-        const response = await axios.get(`http://127.0.0.1:8000/api/recipes/${recipeId}`, {
+        const response = await axios.get(`https://foodly-backend-5mci.onrender.com/api/recipes/${recipeId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -77,7 +77,7 @@ export default function DetailRecipePage() {
     try {
       // Kirim request ke Backend
       await axios.post(
-        `http://127.0.0.1:8000/api/recipes/${recipeId}/like`,
+        `https://foodly-backend-5mci.onrender.com/api/recipes/${recipeId}/like`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -96,7 +96,7 @@ export default function DetailRecipePage() {
     if (isConfirm) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://127.0.0.1:8000/api/recipes/${recipeId}`, {
+        await axios.delete(`https://foodly-backend-5mci.onrender.com/api/recipes/${recipeId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
