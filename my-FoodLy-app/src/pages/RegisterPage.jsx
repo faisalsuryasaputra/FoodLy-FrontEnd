@@ -2,7 +2,7 @@ import { User, Mail, Lock } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react"; // 1. TAMBAHKAN INI
 import BgLogin from "../assets/BgLogin.jpg";
-import FoodlyLogoIcon from "../assets/FoodlyLoginIcon.svg";
+import FoodlyLogoIcon from "../assets/FoodLyLoginIcon.svg";
 import InputGroup from "../components/Auth/InputGroup";
 import { AuthTabs } from "../components/Auth/AuthTabs";
 import { registerUser } from "../services/AuthService"; // 2. IMPORT SERVICE NYA
