@@ -1,4 +1,4 @@
-# 🍽️ my-Foodly-app
+# 🍽️ my-Foodly-app 🍽️
 
 my-Foodly-app adalah aplikasi web berbasis React untuk mencari, melihat, dan mengelola resep makanan.
 
