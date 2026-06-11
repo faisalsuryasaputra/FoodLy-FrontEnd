@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Mail, Lock } from "lucide-react"; 
 import { Link, useNavigate } from "react-router-dom"; // Tambah useNavigate
 import BgLogin from "../assets/BgLogin.jpg";
-import FoodlyLogoIcon from "../assets/FoodlyLoginIcon.svg";
+import FoodlyLogoIcon from "../assets/FoodLyLoginIcon.svg";
 import InputGroup from "../components/Auth/InputGroup";
 import { AuthTabs } from "../components/Auth/AuthTabs";
 import { loginUser } from "../services/AuthService"; // Import fungsi login
