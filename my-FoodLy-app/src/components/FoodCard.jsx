@@ -51,7 +51,7 @@ export default function FoodCard({ id, image, name, userName, likeCount, calCoun
 
     try {
       await axios.post(
-        `http://127.0.0.1:8000/api/recipes/${id}/like`, 
+        `https://foodly-backend-5mci.onrender.com/api/recipes/${id}/like`, 
         {},
         {
           headers: {

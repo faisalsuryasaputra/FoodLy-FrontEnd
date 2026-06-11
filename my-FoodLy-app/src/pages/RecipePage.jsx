@@ -58,7 +58,7 @@ export default function RecipePage() {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/recipes', {
+      const response = await fetch('https://foodly-backend-5mci.onrender.com/api/recipes', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
