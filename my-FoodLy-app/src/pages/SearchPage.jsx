@@ -106,6 +106,7 @@ export default function SearchPage() {
                   <div className="col-4" key={recipe.id}>
                     <FoodCard
                       id={recipe.id}
+                      image={recipe.image_url}
                       name={recipe.title}
                       userName={recipe.user.name}
                       calCount={recipe.calories}
